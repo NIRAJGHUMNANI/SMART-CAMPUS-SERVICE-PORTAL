@@ -1,0 +1,7 @@
+@{ ViewData["Title"] = "Dashboard"; }
+<section class="hero"><div><p class="eyebrow">CAMPUS SERVICES</p><h1>Good day 👋</h1><p>Raise a request, track its progress, and keep campus services moving.</p><a class="btn" asp-controller="Requests" asp-action="Create">＋ Create a request</a></div><div class="hero-icon">🏫</div></section>
+<div class="stats"><div class="stat"><span>Total requests</span><strong>@ViewBag.Total</strong></div><div class="stat"><span>Pending</span><strong>@ViewBag.Pending</strong></div><div class="stat"><span>Completed</span><strong>@ViewBag.Completed</strong></div></div>
+<section class="panel"><div class="section-heading"><div><h2>Recent requests</h2><p>Latest service activity</p></div><a asp-controller="Requests" asp-action="Index">View all →</a></div>
+@if (((IEnumerable<ServiceRequest>)ViewBag.Recent).Any()) { <div class="table-wrap"><table><thead><tr><th>Request</th><th>Category</th><th>Submitted</th><th>Status</th></tr></thead><tbody>@foreach (var r in (IEnumerable<ServiceRequest>)ViewBag.Recent) { <tr><td><strong>@r.StudentName</strong><small>#@r.Id · @r.Description</small></td><td>@r.Category</td><td>@r.CreatedAt.ToString("dd MMM yyyy")</td><td><span class="status @r.Status.Replace(" ", "")">@r.Status</span></td></tr> }</tbody></table></div> } else { <p>No requests yet. Create the first one.</p> }
+</section>
+<div class="api-note"><strong>For practical demonstration:</strong> The REST API is available at <code>/api/requests</code>. Open it to see the database records returned as JSON.</div>

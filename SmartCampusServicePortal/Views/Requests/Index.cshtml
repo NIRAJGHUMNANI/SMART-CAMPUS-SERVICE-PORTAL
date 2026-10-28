@@ -1,0 +1,7 @@
+@model IEnumerable<ServiceRequest>
+@{ ViewData["Title"] = "Service Requests"; }
+<div class="page-heading"><div><p class="eyebrow">CAMPUS SERVICES</p><h1>Service requests</h1><p>Review requests and update their status.</p></div><a class="btn" asp-action="Create">＋ New request</a></div>
+@if (TempData["Message"] is string message) { <div class="alert">@message</div> }
+<section class="panel"><div class="table-wrap"><table><thead><tr><th>Student / Description</th><th>Category</th><th>Created</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+@foreach (var r in Model) { <tr><td><strong>@r.StudentName</strong><small>#@r.Id · @r.Description</small></td><td>@r.Category</td><td>@r.CreatedAt.ToString("dd MMM, hh:mm tt")</td><td><span class="status @r.Status.Replace(" ", "")">@r.Status</span></td><td><div class="actions"><form asp-action="UpdateStatus" method="post"><input type="hidden" name="id" value="@r.Id"/><select name="status" aria-label="Update status"><option selected="@(r.Status == "Pending")">Pending</option><option selected="@(r.Status == "In Progress")">In Progress</option><option selected="@(r.Status == "Completed")">Completed</option></select><button class="btn btn-small" type="submit">Save</button></form><form asp-action="Delete" method="post" onsubmit="return confirm('Delete this request?')"><input type="hidden" name="id" value="@r.Id"/><button class="btn-danger" type="submit">Delete</button></form></div></td></tr> }
+</tbody></table></div>@if (!Model.Any()) { <p>No requests found.</p> }</section>
